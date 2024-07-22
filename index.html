@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,12 @@
             align-items: center;
             font-size: 16px;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
         }
+
         header {
             background-color: #000000;
             color: #ffffff;
@@ -26,39 +31,29 @@
             box-sizing: border-box;
             font-size: 2em;
             border-bottom: 2px solid #444;
-            margin-bottom: 0px;
+            width: 100%;
         }
+
         header h1 {
             margin: 0;
             font-size: 1.5em;
         }
-        select {
-            padding: 0px;
-            font-size: 16px;
-            border: 1px solid #3498db;
-            border-radius: 20px;
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.3s ease;
-            text-align-last: center;
-        }
-        select:hover,
-        select:focus {
-            border-color: #2c3e50;
-        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0px;
+            padding: 0;
             box-sizing: border-box;
         }
+
         .site-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 15px;
-            align: center;
+            justify-content: center;
         }
+
         .site-card {
             background-color: #444;
             border: 1px solid #333;
@@ -72,24 +67,29 @@
             max-width: 150px;
             margin: auto;
         }
+
         .site-card:hover {
             transform: scale(1.2);
         }
+
         .site-card img {
             width: 100%;
             height: auto;
             object-fit: cover;
             border-bottom: 1px solid #333;
         }
+
         .site-info {
             padding: 10px;
             text-align: center;
             flex-grow: 1;
         }
+
         .site-info h2 {
             font-size: 0.9em;
             margin: 0;
         }
+
         .site-link {
             margin-top: 10px;
             color: #ffffff;
@@ -100,22 +100,60 @@
             display: inline-block;
             transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
+
         .site-link:hover {
             background-color: #2c3e50;
             color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         footer {
             background-color: #000000;
             color: #ffffff;
             padding: 20px;
             text-align: center;
             margin-top: 20px;
+            width: 100%;
         }
+
         @media only screen and (max-width: 600px) {
             .site-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -126,35 +164,64 @@
         </a>
     </header>
 
-    <div class="site-grid">
-        <a href="https://tvtelugulive.vercel.app/" class="site-card">
-            <img src="https://yt3.googleusercontent.com/72uWDy4tWLmUXeLH9TiRXy-NjRZnYfMHLiqUbZParNUJibmXTiptyDpuh1RnhbHx9op1ITS2wg=s176-c-k-c0x00ffffff-no-rj" alt="Tata Play">
-            <h2>🟢 TATAPLAY (INDIA)</h2>
-        </a>
-        <a href="" class="site-card">
-            <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2022/01/95/61f1ed6874463.png" alt="Global">
-            <h2>🔴 TATAPLAY (Global)</h2>
-        </a>
-        <a href="" class="site-card">
-            <img src="https://yt3.googleusercontent.com/ytc/AIdro_lKULdxBE4H3HJlomG_vs3XMDk6FnCQA6zgO0EVZH5Kvg=s176-c-k-c0x00ffffff-no-rj" alt="Jio TV+">
-            <h2>🔴 Jio TV+ (INDIA)</h2>
-        </a>
-        <a href="https://tvtelugu.github.io/radio/" class="site-card">
-            <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/Radio.png" alt="Listen Telugu Radio">
-            <h2>🟢 Online Radio</h2>
-        </a>
-        <a href="https://t.me/tvtelugu" class="site-card">
-            <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/telegram.png" alt="Join Our Telgram Channel">
-            <h2>🟢 Channel</h2>
-        </a>
-        <a href="https://www.whatsapp.com/channel/0029VaP2kFRDjiOWW7zY4A1Y" class="site-card">
-            <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/WHATSAPP.png" alt="Join Our Whatsapp Channel">
-            <h2>🟢 Channel</h2>
-        </a>
+    <div class="container">
+        <div class="site-grid">
+            <a href="https://tvtelugulive.vercel.app/" class="site-card" onclick="showModal(event, 'https://yt3.googleusercontent.com/72uWDy4tWLmUXeLH9TiRXy-NjRZnYfMHLiqUbZParNUJibmXTiptyDpuh1RnhbHx9op1ITS2wg=s176-c-k-c0x00ffffff-no-rj')">
+                <img src="https://yt3.googleusercontent.com/72uWDy4tWLmUXeLH9TiRXy-NjRZnYfMHLiqUbZParNUJibmXTiptyDpuh1RnhbHx9op1ITS2wg=s176-c-k-c0x00ffffff-no-rj" alt="Tata Play">
+                <p>🟢 TATAPLAY (INDIA)</p>
+            </a>
+            <a href="" class="site-card" onclick="showModal(event, 'https://downloadr2.apkmirror.com/wp-content/uploads/2022/01/95/61f1ed6874463.png')">
+                <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2022/01/95/61f1ed6874463.png" alt="Global">
+                <p>🔴 TATAPLAY (Global)</p>
+            </a>
+            <a href="" class="site-card" onclick="showModal(event, 'https://yt3.googleusercontent.com/ytc/AIdro_lKULdxBE4H3HJlomG_vs3XMDk6FnCQA6zgO0EVZH5Kvg=s176-c-k-c0x00ffffff-no-rj')">
+                <img src="https://yt3.googleusercontent.com/ytc/AIdro_lKULdxBE4H3HJlomG_vs3XMDk6FnCQA6zgO0EVZH5Kvg=s176-c-k-c0x00ffffff-no-rj" alt="Jio TV+">
+                <p>🔴 Jio TV+ (INDIA)</p>
+            </a>
+            <a href="https://tvtelugu.github.io/radio/" class="site-card" onclick="showModal(event, 'https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/Radio.png')">
+                <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/Radio.png" alt="Listen Telugu Radio">
+                <p>🟢 Online Radio</p>
+            </a>
+            <a href="https://t.me/tvtelugu" class="site-card" onclick="showModal(event, 'https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/telegram.png')">
+                <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/telegram.png" alt="Join Our Telgram Channel">
+                <p>🟢 Channel</p>
+            </a>
+            <a href="https://www.whatsapp.com/channel/0029VaP2kFRDjiOWW7zY4A1Y" class="site-card" onclick="showModal(event, 'https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/WHATSAPP.png')">
+                <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/WHATSAPP.png" alt="Join Our Whatsapp Channel">
+                <p>🟢 Channel</p>
+            </a>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modal-image" src="" alt="Preview" style="width: 100%;">
+        </div>
     </div>
 
     <footer>
-        <h2>&copy; 🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™</h2>
+        <p>&copy; 🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™</p>
     </footer>
+
+    <script>
+        function showModal(event, imageUrl) {
+            event.preventDefault();
+            document.getElementById('modal-image').src = imageUrl;
+            document.getElementById('myModal').style.display = 'block';
+            document.body.style.backgroundImage = `url(${imageUrl})`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+            document.body.style.backgroundBlendMode = 'multiply';
+            document.body.style.opacity = 0.8;
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+            document.body.style.backgroundImage = 'none';
+            document.body.style.opacity = 1;
+        }
+    </script>
 </body>
 </html>
