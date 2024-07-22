@@ -9,48 +9,39 @@
     <style>
         body {
             font-family: 'Baskervville SC', serif;
-            background-color: #000000;
+            background: url('https://images.pexels.com/photos/4840134/pexels-photo-4840134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+            background-size: cover;
             color: #ffffff;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             text-align: center;
-            align-items: center;
             font-size: 16px;
             line-height: 1.6;
-            transition: background-image 0.3s ease-in-out;
-            background-size: cover;
-            background-repeat: no-repeat;
-            position: relative;
         }
-
-        .background-overlay {
+        body::before {
+            content: "";
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            transition: background-image 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+            background: inherit;
+            filter: blur(10px);
             z-index: -1;
         }
-
         header {
-            background-color: #000000;
+            background-color: rgba(0, 0, 0, 0.7);
             color: #ffffff;
             padding: 1em 0;
             box-sizing: border-box;
             font-size: 2em;
             border-bottom: 2px solid #444;
-            margin-bottom: 0px;
         }
-
         header h1 {
             margin: 0;
             font-size: 1.5em;
         }
-
         select {
             padding: 0px;
             font-size: 16px;
@@ -61,29 +52,26 @@
             transition: border-color 0.3s ease;
             text-align-last: center;
         }
-
         select:hover,
         select:focus {
             border-color: #2c3e50;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0px;
             box-sizing: border-box;
         }
-
         .site-grid {
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            margin: 15px auto;
+            width: fit-content;
+            justify-content: center;
         }
-
         .site-card {
-            background-color: #444;
+            background-color: rgba(68, 68, 68, 0.9);
             border: 1px solid #333;
             border-radius: 8px;
             overflow: hidden;
@@ -94,29 +82,24 @@
             flex-direction: column;
             max-width: 150px;
         }
-
         .site-card:hover {
             transform: scale(1.2);
         }
-
         .site-card img {
             width: 100%;
             height: auto;
             object-fit: cover;
             border-bottom: 1px solid #333;
         }
-
         .site-info {
             padding: 10px;
             text-align: center;
             flex-grow: 1;
         }
-
         .site-info h2 {
             font-size: 0.9em;
             margin: 0;
         }
-
         .site-link {
             margin-top: 10px;
             color: #ffffff;
@@ -127,25 +110,21 @@
             display: inline-block;
             transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
-
         .site-link:hover {
             background-color: #2c3e50;
             color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         footer {
-            background-color: #000000;
+            background-color: rgba(0, 0, 0, 0.7);
             color: #ffffff;
             padding: 20px;
             text-align: center;
             margin-top: 20px;
         }
-
         @media only screen and (max-width: 600px) {
             .site-grid {
-                flex-direction: column;
-                align-items: center;
+                grid-template-columns: repeat(3, 1fr);
             }
         }
     </style>
@@ -158,27 +137,27 @@
     </header>
 
     <div class="site-grid">
-        <a href="https://tvtelugulive.vercel.app/" class="site-card" data-background="https://yt3.googleusercontent.com/72uWDy4tWLmUXeLH9TiRXy-NjRZnYfMHLiqUbZParNUJibmXTiptyDpuh1RnhbHx9op1ITS2wg=s176-c-k-c0x00ffffff-no-rj">
+        <a href="https://tvtelugulive.vercel.app/" class="site-card">
             <img src="https://yt3.googleusercontent.com/72uWDy4tWLmUXeLH9TiRXy-NjRZnYfMHLiqUbZParNUJibmXTiptyDpuh1RnhbHx9op1ITS2wg=s176-c-k-c0x00ffffff-no-rj" alt="Tata Play">
             <p>🟢 TATAPLAY (INDIA)</p>
         </a>
-        <a href="" class="site-card" data-background="https://downloadr2.apkmirror.com/wp-content/uploads/2022/01/95/61f1ed6874463.png">
+        <a href="" class="site-card">
             <img src="https://downloadr2.apkmirror.com/wp-content/uploads/2022/01/95/61f1ed6874463.png" alt="Global">
             <p>🔴 TATAPLAY (Global)</p>
         </a>
-        <a href="" class="site-card" data-background="https://yt3.googleusercontent.com/ytc/AIdro_lKULdxBE4H3HJlomG_vs3XMDk6FnCQA6zgO0EVZH5Kvg=s176-c-k-c0x00ffffff-no-rj">
+        <a href="" class="site-card">
             <img src="https://yt3.googleusercontent.com/ytc/AIdro_lKULdxBE4H3HJlomG_vs3XMDk6FnCQA6zgO0EVZH5Kvg=s176-c-k-c0x00ffffff-no-rj" alt="Jio TV+">
             <p>🔴 Jio TV+ (INDIA)</p>
         </a>
-        <a href="https://tvtelugu.github.io/radio/" class="site-card" data-background="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/Radio.png">
+        <a href="https://tvtelugu.github.io/radio/" class="site-card">
             <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/Radio.png" alt="Listen Telugu Radio">
             <p>🟢 Online Radio</p>
         </a>
-        <a href="https://t.me/tvtelugu" class="site-card" data-background="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/telegram.png">
+        <a href="https://t.me/tvtelugu" class="site-card">
             <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/telegram.png" alt="Join Our Telgram Channel">
             <p>🟢 Channel</p>
         </a>
-        <a href="https://www.whatsapp.com/channel/0029VaP2kFRDjiOWW7zY4A1Y" class="site-card" data-background="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/WHATSAPP.png">
+        <a href="https://www.whatsapp.com/channel/0029VaP2kFRDjiOWW7zY4A1Y" class="site-card">
             <img src="https://raw.githubusercontent.com/tvtelugu/tvtelugu.github.io/main/web/img/WHATSAPP.png" alt="Join Our Whatsapp Channel">
             <p>🟢 Channel</p>
         </a>
@@ -187,23 +166,5 @@
     <footer>
         <p>&copy; 🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™</p>
     </footer>
-
-    <div class="background-overlay"></div>
-
-    <script>
-        document.querySelectorAll('.site-card').forEach(card => {
-            card.addEventListener('mouseover', function() {
-                const backgroundImage = this.getAttribute('data-background');
-                const overlay = document.querySelector('.background-overlay');
-                overlay.style.backgroundImage = `url(${backgroundImage})`;
-                overlay.style.backdropFilter = 'blur(10px)';
-            });
-            card.addEventListener('mouseout', function() {
-                const overlay = document.querySelector('.background-overlay');
-                overlay.style.backgroundImage = '';
-                overlay.style.backdropFilter = '';
-            });
-        });
-    </script>
 </body>
 </html>
