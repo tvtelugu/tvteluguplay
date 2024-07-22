@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Add viewport meta tag -->
+  <title>🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™ || Movies</title>
+  <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+    }
+    .video-container {
+      padding: 0px;
+      display: flex;
+      justify-content: center;
+      position: relative;
+    }
+    .embed-responsive {
+      width: 100%;
+    }
+    .logo-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000; /* Ensure logo is above player controls */
+    }
+    .video-selection {
+      margin-top: 0px;
+    }
+    .fullscreen-logo {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+    }
+
+    /* Loading animation styles */
+    .loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #000;
+      z-index: 10000;
+    }
+    .loading-logo {
+      width: 30%;
+      height: auto;
+      animation: pulse 1.5s infinite;
+    }
+    .loading-bar {
+      width: 30%;
+      max-width: 300px;
+      height: 10px;
+      background: #000;
+      margin-top: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .loading-bar-inner {
+      width: 0;
+      height: 100%;
+      background: #ed8f13;
+      animation: load 3s linear forwards;
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes load {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="loading-container" id="loading-container">
+  <img src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png" alt="Logo" class="loading-logo">
+  <img src="https://visit-counter.vercel.app/counter.png?page=https%3A%2F%2Ftvtelugu.vercel.app%2FMovie.html&s=20&c=ffa200&bg=00000000&no=2&ff=electrolize&tb=&ta=" alt="visits">
+  <div class="loading-bar">
+    <div class="loading-bar-inner"></div>
+  </div>
+</div>
+<div class="container" id="main-content" style="display: none;">
+  <div class="video-container">
+    <div class="logo-container" id="logo-container">
+      <img src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png" alt="Logo" style="max-width: 100px; height: auto;">
+      <img src="https://visit-counter.vercel.app/counter.png?page=https%3A%2F%2Ftvtelugu.vercel.app%2FMovie.html&s=20&c=ffa200&bg=00000000&no=2&ff=electrolize&tb=&ta=" alt="visits">
+    </div>
+    <div class="embed-responsive embed-responsive-16by9">
+      <div id="player-container" class="embed-responsive-item"></div>
+    </div>
+  </div>
+  <div class="video-selection">
+    <label for="channel-select">Select a Movie & Wait For 2min Until Player Load:</label>
+    <select id="channel-select" class="form-control"></select>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/clappr@latest/dist/clappr.min.js"></script>
+<script>
+  const introVideo = 'https://github.com/tvtelugu/play/raw/main/tvtelugu.mp4'; // Intro video URL
+  let mainVideo = localStorage.getItem('selectedVideo') || '';
+  const playerContainer = document.getElementById('player-container');
+  const logoContainer = document.getElementById('logo-container');
+  const loadingContainer = document.getElementById('loading-container');
+  const mainContent = document.getElementById('main-content');
+
+  // Initialize Clappr player
+  const player = new Clappr.Player({
+    source: introVideo,
+    parentId: '#player-container',
+    width: '100%',
+    height: '100%', // Ensure full screen compatibility
+    autoPlay: true,
+    mute: false,
+    poster: 'https://github.com/tvtelugu/play/raw/main/images/poster.jpg' // Add a poster image if available
+  });
+
+  player.on(Clappr.Events.PLAYER_LOADEDMETADATA, function() {
+    setTimeout(() => {
+      loadingContainer.style.display = 'none';
+      mainContent.style.display = 'block';
+    }, 3000); // Set the loading screen duration to 3 seconds
+  });
+
+  player.on(Clappr.Events.PLAYER_ENDED, function() {
+    if (mainVideo) {
+      player.load(mainVideo);
+      mainVideo = ''; // Reset main video after playing
+    }
+  });
+
+  // Function to load video data from JSON file
+  fetch('data.json')
+    .then(response => response.json())
+    .then(data => {
+      const select = document.getElementById('channel-select');
+      data.forEach(movie => {
+        const option = document.createElement('option');
+        option.value = movie.url;
+        option.textContent = movie.title;
+        select.appendChild(option);
+      });
+
+      // Set the selected option based on localStorage
+      if (mainVideo) {
+        select.value = mainVideo;
+        player.load(mainVideo);
+        const selectedMovie = data.find(movie => movie.url === mainVideo);
+        if (selectedMovie) {
+          document.title = `🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™ || ${selectedMovie.title}`;
+        }
+      }
+    });
+
+  // Function to change video source based on dropdown selection
+  document.getElementById('channel-select').addEventListener('change', function() {
+    mainVideo = this.value;
+    localStorage.setItem('selectedVideo', mainVideo);
+    player.load(introVideo);
+
+    // Change the page title to the selected movie title
+    const selectedOption = this.options[this.selectedIndex];
+    document.title = `🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™ || ${selectedOption.textContent}`;
+  });
+
+  // Fullscreen change handler
+  function handleFullscreenChange() {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
+      logoContainer.classList.add('fullscreen-logo');
+    } else {
+      logoContainer.classList.remove('fullscreen-logo');
+    }
+  }
+
+  document.addEventListener('fullscreenchange', handleFullscreenChange);
+  document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+  document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+  document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+  // Disable right-click context menu
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+  });
+
+  // Disable specific keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if (e.ctrlKey && (e.key === 'u' || e.key === 'U')) {
+      e.preventDefault();
+    }
+    if (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'I')) {
+      e.preventDefault();
+    }
+    if (e.key === 'F12') {
+      e.preventDefault();
+    }
+  });
+
+  // Ensure loading screen stays for at least 3 seconds
+  setTimeout(() => {
+    loadingContainer.style.display = 'none';
+    mainContent.style.display = 'block';
+  }, 3000); // Minimum loading screen duration
+</script>
+</body>
+</html>
