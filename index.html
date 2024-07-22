@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Baskervville SC', serif;
-            background: url('https://images.pexels.com/photos/4840134/pexels-photo-4840134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+            background: url('your-background-image-url.jpg') no-repeat center center fixed;
             background-size: cover;
             color: #ffffff;
             margin: 0;
@@ -63,12 +63,12 @@
             box-sizing: border-box;
         }
         .site-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 15px;
             margin: 15px auto;
             width: fit-content;
-            justify-content: center;
         }
         .site-card {
             background-color: rgba(68, 68, 68, 0.9);
@@ -124,7 +124,8 @@
         }
         @media only screen and (max-width: 600px) {
             .site-grid {
-                grid-template-columns: repeat(3, 1fr);
+                flex-direction: column;
+                align-items: center;
             }
         }
     </style>
