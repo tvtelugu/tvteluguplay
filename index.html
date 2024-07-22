@@ -21,7 +21,21 @@
             transition: background-image 0.3s ease-in-out;
             background-size: cover;
             background-repeat: no-repeat;
+            position: relative;
         }
+
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            transition: background-image 0.3s ease-in-out, backdrop-filter 0.3s ease-in-out;
+            z-index: -1;
+        }
+
         header {
             background-color: #000000;
             color: #ffffff;
@@ -31,10 +45,12 @@
             border-bottom: 2px solid #444;
             margin-bottom: 0px;
         }
+
         header h1 {
             margin: 0;
             font-size: 1.5em;
         }
+
         select {
             padding: 0px;
             font-size: 16px;
@@ -45,16 +61,19 @@
             transition: border-color 0.3s ease;
             text-align-last: center;
         }
+
         select:hover,
         select:focus {
             border-color: #2c3e50;
         }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0px;
             box-sizing: border-box;
         }
+
         .site-grid {
             display: flex;
             justify-content: center;
@@ -62,6 +81,7 @@
             margin-top: 15px;
             flex-wrap: wrap;
         }
+
         .site-card {
             background-color: #444;
             border: 1px solid #333;
@@ -74,24 +94,29 @@
             flex-direction: column;
             max-width: 150px;
         }
+
         .site-card:hover {
             transform: scale(1.2);
         }
+
         .site-card img {
             width: 100%;
             height: auto;
             object-fit: cover;
             border-bottom: 1px solid #333;
         }
+
         .site-info {
             padding: 10px;
             text-align: center;
             flex-grow: 1;
         }
+
         .site-info h2 {
             font-size: 0.9em;
             margin: 0;
         }
+
         .site-link {
             margin-top: 10px;
             color: #ffffff;
@@ -102,11 +127,13 @@
             display: inline-block;
             transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
+
         .site-link:hover {
             background-color: #2c3e50;
             color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         footer {
             background-color: #000000;
             color: #ffffff;
@@ -114,6 +141,7 @@
             text-align: center;
             margin-top: 20px;
         }
+
         @media only screen and (max-width: 600px) {
             .site-grid {
                 flex-direction: column;
@@ -160,16 +188,20 @@
         <p>&copy; 🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™</p>
     </footer>
 
+    <div class="background-overlay"></div>
+
     <script>
         document.querySelectorAll('.site-card').forEach(card => {
             card.addEventListener('mouseover', function() {
-                document.body.style.backgroundImage = `url(${this.getAttribute('data-background')})`;
-                document.body.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent black overlay
-                document.body.style.backgroundBlendMode = 'overlay';
+                const backgroundImage = this.getAttribute('data-background');
+                const overlay = document.querySelector('.background-overlay');
+                overlay.style.backgroundImage = `url(${backgroundImage})`;
+                overlay.style.backdropFilter = 'blur(10px)';
             });
             card.addEventListener('mouseout', function() {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = '#000000'; // Revert to original background color
+                const overlay = document.querySelector('.background-overlay');
+                overlay.style.backgroundImage = '';
+                overlay.style.backdropFilter = '';
             });
         });
     </script>
