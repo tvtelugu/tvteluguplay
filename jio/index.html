@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™ || 𝐉𝐢𝐨 𝐭𝐯+</title>
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Wittgenstein:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Wittgenstein', serif;
+            background: url('https://images.pexels.com/photos/4840134/pexels-photo-4840134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed; /* Background image */
+            background-size: cover;
+            color: #2c3e50; /* Dark blue text color */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            overflow: auto; /* Allow scrolling */
+            position: relative; /* Added relative position for pseudo-element */
+        }
+
+        /* Pseudo-element for the black glass overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* 40% black overlay for glass effect */
+            backdrop-filter: blur(10px); /* Optional: Adds blur effect for glass-like appearance */
+            z-index: -1; /* Ensure it stays behind other content */
+        }
+
+        h1 {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            color: #fff;
+            font-size: 2.5em; /* Adjusted size for better visibility */
+            background: linear-gradient(90deg, #ff007a, #ff5e00, #f9c81f, #00b2ff, #8e2de2); /* Multicolor gradient */
+            background-clip: text; /* Clips background to text */
+            -webkit-background-clip: text; /* Needed for WebKit browsers */
+            color: transparent; /* Hide the original text color */
+            animation: gradientShift 3s linear infinite; /* Animation for gradient */
+        }
+        .title-logo {
+            width: 100px;
+            height: 100px;
+            margin-right: 10px;
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .select-container, .search-container {
+            position: relative;
+            width: 32%;
+        }
+        .material-icons {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #2c3e50; /* Dark blue icon color */
+        }
+        select, input {
+            width: 100%;
+            padding: 10px 10px 10px 40px;
+            border: 1px solid #3498db; /* Blue border color */
+            border-radius: 5px;
+            outline: none;
+            font-size: 16px;
+            background-color: #ffffff; /* White background for inputs */
+            color: #2c3e50; /* Dark blue text color */
+            /* Removed transition for background color and box-shadow */
+        }
+        select, input {
+            /* Removed hover effect */
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-color: #ffffff; /* White background for select */
+        }
+        .select-container::after {
+            content: 'arrow_drop_down';
+            font-family: 'Material Icons';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #2c3e50; /* Dark blue icon color */
+        }
+        .search-container .material-icons {
+            color: #2c3e50; /* Dark blue icon color */
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+        .channel-card {
+            background-color: #ffffff; /* White background for cards */
+            border-radius: 5px;
+            overflow: hidden;
+            text-align: center;
+            /* Removed transform effect and box-shadow */
+        }
+        .channel-logo {
+            height: 90px;
+            width: 90px;
+            object-fit: contain;
+            margin: 20px auto;
+        }
+        .channel-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50; /* Dark blue text color */
+            margin: 10px 0;
+        }
+        .channel-genre {
+            font-size: 14px;
+            color: #7f8c8d; /* Light grey text color for genre */
+            margin-bottom: 20px;
+        }
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8); /* Darker transparent background for loader */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+        .loader {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loader .dot {
+            width: 15px;
+            height: 15px;
+            background-color: #e50914; /* Netflix red color */
+            border-radius: 50%;
+            animation: bounce 0.6s infinite alternate;
+        }
+        .loader .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .loader .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-20px);
+                opacity: 0.7;
+            }
+        }
+        @keyframes gradientShift {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 0%;
+            }
+            100% {
+                background-position: 0% 100%;
+            }
+        }
+        footer {
+            margin-top: 40px;
+            padding: 10px;
+            background-color: #2c3e50; /* Dark blue background for footer */
+            color: #ffffff; /* White text color */
+            text-align: center;
+            border-radius: 5px;
+            /* Removed box-shadow */
+            width: 100%;
+            max-width: 600px;
+        }
+        .footer-text {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-container" id="loader-container">
+        <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+    <h1>
+        <img src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png" alt="Title Logo" class="title-logo">
+        🕊 𝐉𝐢𝐨 𝐭𝐯+
+    </h1>
+    <div class="controls">
+        <div class="select-container">
+            <i class="material-icons">category</i>
+            <select id="genre-select">
+                <option value="">All Genres</option>
+            </select>
+        </div>
+        <div class="select-container">
+            <i class="material-icons">language</i>
+            <select id="language-select">
+                <option value="">All Languages</option>
+            </select>
+        </div>
+        <div class="search-container">
+            <i class="material-icons">search</i>
+            <input type="text" id="search-bar" placeholder="Search channels...">
+        </div>
+    </div>
+    <div class="grid-container" id="grid-container">
+        <!-- Channel cards will be dynamically inserted here -->
+    </div>
+    <footer>
+        <p class="footer-text">© 2024 🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Show the loader
+        const loaderContainer = document.getElementById('loader-container');
+        function showLoader() {
+            loaderContainer.style.display = 'flex';
+        }
+
+        // Hide the loader
+        function hideLoader() {
+            loaderContainer.style.display = 'none';
+        }
+
+        showLoader();
+
+        // Fetch the channel data from the JSON file
+        fetch('jio.json')
+            .then(response => response.json())
+            .then(channelsData => {
+                const gridContainer = document.getElementById('grid-container');
+                const genreSelect = document.getElementById('genre-select');
+                const languageSelect = document.getElementById('language-select');
+                const searchBar = document.getElementById('search-bar');
+
+                // Populate the genre dropdown
+                const genres = [...new Set(channelsData.map(channel => channel.group))];
+                genres.forEach(genre => {
+                    const option = document.createElement('option');
+                    option.value = genre;
+                    option.textContent = genre;
+                    genreSelect.appendChild(option);
+                });
+
+                // Populate the language dropdown
+                const languages = [...new Set(channelsData.map(channel => channel.language))];
+                languages.forEach(language => {
+                    const option = document.createElement('option');
+                    option.value = language;
+                    option.textContent = language;
+                    languageSelect.appendChild(option);
+                });
+
+                // Function to render the channels based on filters
+                function renderChannels() {
+                    gridContainer.innerHTML = ''; // Clear the grid
+                    const searchQuery = searchBar.value.toLowerCase();
+                    const selectedGenre = genreSelect.value;
+                    const selectedLanguage = languageSelect.value;
+                    const filteredChannels = channelsData.filter(channel => {
+                        const matchesGenre = selectedGenre === '' || channel.group === selectedGenre;
+                        const matchesLanguage = selectedLanguage === '' || channel.language === selectedLanguage;
+                        const matchesSearch = channel.name.toLowerCase().includes(searchQuery);
+                        return matchesGenre && matchesLanguage && matchesSearch;
+                    });
+
+                    filteredChannels.forEach(channel => {
+                        const channelCard = document.createElement('div');
+                        channelCard.classList.add('channel-card');
+
+                        const channelLink = document.createElement('a');
+                        channelLink.href = `Play.html?id=${channel.id}`;
+
+                        const channelLogo = document.createElement('img');
+                        channelLogo.src = channel.logo;
+                        channelLogo.alt = `${channel.name} Logo`;
+                        channelLogo.classList.add('channel-logo');
+
+                        const channelName = document.createElement('div');
+                        channelName.classList.add('channel-name');
+                        channelName.textContent = channel.name;
+
+                        const channelGenre = document.createElement('div');
+                        channelGenre.classList.add('channel-genre');
+                        channelGenre.textContent = channel.group;
+
+                        channelLink.appendChild(channelLogo);
+                        channelLink.appendChild(channelName);
+                        channelLink.appendChild(channelGenre);
+
+                        channelCard.appendChild(channelLink);
+                        gridContainer.appendChild(channelCard);
+                    });
+                }
+
+                // Initial render
+                renderChannels();
+                hideLoader();
+
+                // Event listeners for filtering
+                genreSelect.addEventListener('change', renderChannels);
+                languageSelect.addEventListener('change', renderChannels);
+                searchBar.addEventListener('input', renderChannels);
+            })
+            .catch(error => {
+                console.error('Error fetching channel data:', error);
+                hideLoader();
+            });
+    </script>
+</body>
+</html>
