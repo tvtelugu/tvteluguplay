@@ -29,26 +29,40 @@
     const apiUrl = 'https://fox.toxic-gang.xyz/jplus/key/1973';
 
     fetch(apiUrl)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+      })
       .then(data => {
-        const fileUrl = data.data.initialUrl;
-        const keyId = data.keys.keys[0].kid;
-        const key = data.keys.keys[0].k;
+        console.log('Fetched data:', data); // Debugging: log the fetched data
+        if (data.data && data.keys && data.keys.keys.length > 0) {
+          const fileUrl = data.data.initialUrl;
+          const keyId = data.keys.keys[0].kid;
+          const key = data.keys.keys[0].k;
 
-        jwplayer("jwplayerDiv").setup({
-          file: fileUrl,
-          position: 'bottom',
-          autostart: true,
-          stretching: "",
-          width: "100%",
-          type: "dash",
-          drm: {
-            clearkey: {
-              keyId: keyId,
-              key: key
+          console.log('File URL:', fileUrl); // Debugging: log the file URL
+          console.log('Key ID:', keyId); // Debugging: log the Key ID
+          console.log('Key:', key); // Debugging: log the Key
+
+          jwplayer("jwplayerDiv").setup({
+            file: fileUrl,
+            position: 'bottom',
+            autostart: true,
+            stretching: "fill",
+            width: "100%",
+            type: "dash",
+            drm: {
+              clearkey: {
+                keyId: keyId,
+                key: key
+              }
             }
-          }
-        });
+          });
+        } else {
+          console.error('Invalid data structure:', data);
+        }
       })
       .catch(error => console.error('Error fetching data:', error));
   </script>
