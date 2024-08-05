@@ -18,24 +18,30 @@ $id = $data[1];
 
 <head>
     <title id="pageTitle">🕊𝐓𝐕𝐓𝐞𝐥𝐮𝐠𝐮™</title>
-    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="ENJOY FREE LIVE TV">
     <meta name="keywords" content="LIVETV, SPORTS, MOVIES, MUSIC">
     <meta name="author" content="Vaathala">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
-    <script src="https://cdn.plyr.io/3.6.3/plyr.js" defer></script>
-    <script src="assets/js/jwplayer.js" defer></script>
-    <link rel="shortcut icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico" type="image/x-icon">
-    <script src='https://content.jwplatform.com/libraries/IDzF9Zmk.js' defer></script>
+    <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+    <script src="assets/js/jwplayer.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVtelugu.ico">
+    <script type='text/javascript' src='https://content.jwplatform.com/libraries/IDzF9Zmk.js'></script>
     <style>
-        /* Minimize CSS here */
-        html {
-            font-family: Poppins;
-            background: #000;
-            overflow: hidden;
+        /* Add your styles here */
+        body, html {
             margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #000;
+            font-family: Poppins;
+        }
+        #videoContainer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
         .logo {
             position: absolute;
@@ -47,52 +53,59 @@ $id = $data[1];
             background-size: contain;
             z-index: 1;
         }
-        /* Minimized remaining CSS */
     </style>
 </head>
 
 <body>
-    <video id="myElement"></video>
-    <div class="logo"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            jwplayer.key = 'Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==';
+    <div id="videoContainer">
+        <video id="myElement"></video>
+        <div class="logo"></div>
+    </div>
+    <script type="text/javascript">
+        jwplayer.key = 'Khpp2dHxlBJHC8MCmLnBuV2jK/DwDnJMniwF6EO9HC/riJ712ZmbHg==';
 
-            // Function to get URL parameter by name
-            function getUrlParameter(name) {
-                const results = new RegExp('[?&]' + name + '=([^&#]*)').exec(window.location.search);
-                return results ? decodeURIComponent(results[1].replace(/\+/g, ' ')) : '';
+        // Function to get URL parameter by name
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        var id = getUrlParameter('id');
+
+        // Load the jio.json file and get the video data by ID
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                var videoData = data.find(video => video.id === id);
+
+                if (videoData) {
+                    jwplayer("myElement").setup({
+                        title: videoData.name,
+                        description: "VaathalaTV",
+                        image: videoData.logo,
+                        aspectratio: '16:9',
+                        width: '100%',
+                        mute: false,
+                        autostart: true,
+                        file: videoData.link,
+                        type: "hls",
+                        captions: {color: '#ffb800', fontSize: 30, backgroundOpacity: 0},
+                        sharing: {
+                            sites: ['facebook', 'twitter']
+                        }
+                    });
+                } else {
+                    console.error("Video not found in JSON data.");
+                }
+            } else if (xhr.readyState === 4) {
+                console.error("Failed to load JSON file.");
             }
-
-            const id = getUrlParameter('id');
-
-            // Load the m1.json file and get the video data by ID
-            fetch('jio.json')
-                .then(response => response.json())
-                .then(data => {
-                    const videoData = data.find(video => video.id === id);
-
-                    if (videoData) {
-                        jwplayer("myElement").setup({
-                            title: videoData.name,
-                            description: "VaathalaTV",
-                            image: videoData.logo,
-                            aspectratio: '16:9',
-                            width: '100%',
-                            mute: false,
-                            autostart: true,
-                            file: videoData.link,
-                            type: "hls",
-                            captions: {color: '#ffb800', fontSize: 30, backgroundOpacity: 0},
-                            sharing: {
-                                sites: ['facebook', 'twitter']
-                            }
-                        });
-                    }
-                })
-                .catch(error => console.error('Error loading video data:', error));
-        });
+        };
+        xhr.open('GET', 'jio.json', true);
+        xhr.send();
     </script>
 </body>
-
 </html>
