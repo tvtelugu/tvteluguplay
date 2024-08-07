@@ -12,7 +12,6 @@ header {
     justify-content: center;
     align-items: center;
     padding: 20px;
-    z-index: 10; /* Ensure header is above other content but below the popup */
 }
 
 header .logo {
@@ -32,7 +31,6 @@ main {
     display: flex;
     justify-content: center;
     padding: 20px;
-    z-index: 1; /* Ensure main content is below the popup */
 }
 
 #channelGrid {
@@ -66,17 +64,16 @@ main {
 }
 
 .popup {
-    display: none;
-    position: fixed;
-    z-index: 1000; /* Ensure popup is above all content */
+ display: none;
+    position: top;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
-    align-items: top;
-    overflow: hidden; /* Prevents scrolling within the popup */
+    align-items: center;
 }
 
 .popup-content {
@@ -99,13 +96,13 @@ main {
     position: absolute;
     top: 10px;
     right: 20px;
-    font-size: 30px;
+    font-size: 50px;
     cursor: pointer;
     color: red;
 }
 
 .fullscreen-logo {
-    display: none;
+   
     position: absolute;
     top: 10px;
     left: 10px;
