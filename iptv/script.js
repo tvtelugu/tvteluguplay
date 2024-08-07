@@ -32,7 +32,21 @@ function loadChannels(channels) {
 function openPopup(link) {
     const popup = document.getElementById('popupPlayer');
     const videoPlayer = document.getElementById('videoPlayer');
-    videoPlayer.src = link;
+
+    if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(link);
+        hls.attachMedia(videoPlayer);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            videoPlayer.play();
+        });
+    } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+        videoPlayer.src = link;
+        videoPlayer.addEventListener('loadedmetadata', () => {
+            videoPlayer.play();
+        });
+    }
+
     popup.style.display = 'block';
 }
 
