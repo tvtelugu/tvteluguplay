@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css" />
+    <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Oswald', sans-serif;
+            background-color: #000;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #player {
+            width: 80%;
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+    <video id="player" controls></video>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        
+        fetch('iptv.json')
+            .then(response => response.json())
+            .then(data => {
+                const channel = data.find(c => c.id === id);
+                if (channel) {
+                    const video = document.getElementById('player');
+                    if (Hls.isSupported()) {
+                        const hls = new Hls();
+                        hls.loadSource(channel.link);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                            video.play();
+                        });
+                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = channel.link;
+                        video.addEventListener('canplay', function() {
+                            video.play();
+                        });
+                    }
+                }
+            });
+    </script>
+</body>
+</html>
