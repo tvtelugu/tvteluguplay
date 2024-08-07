@@ -48,6 +48,7 @@ function openPopup(link) {
     }
 
     popup.style.display = 'block';
+    const player = new Plyr(videoPlayer);
 }
 
 function closePopup() {
