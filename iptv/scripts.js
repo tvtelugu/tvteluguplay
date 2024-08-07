@@ -37,11 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const playerPopup = document.getElementById('playerPopup');
     const closeButton = document.querySelector('.close-button');
+    const videoElement = document.getElementById('player');
+    let hls;
 
     closeButton.addEventListener('click', () => {
         playerPopup.style.display = 'none';
-        document.getElementById('player').pause();
-        document.getElementById('player').removeAttribute('src'); // Remove source to stop HLS stream
+        videoElement.pause();
+        videoElement.removeAttribute('src'); // Remove source to stop HLS stream
+        if (hls) {
+            hls.destroy();
+        }
     });
 
     function openPlayerPopup(id) {
@@ -50,18 +55,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const channel = data.find(c => c.id === id);
                 if (channel) {
-                    const video = document.getElementById('player');
                     if (Hls.isSupported()) {
-                        const hls = new Hls();
+                        hls = new Hls();
                         hls.loadSource(channel.link);
-                        hls.attachMedia(video);
+                        hls.attachMedia(videoElement);
                         hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                            video.play();
+                            videoElement.play();
                         });
-                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                        video.src = channel.link;
-                        video.addEventListener('canplay', function() {
-                            video.play();
+                    } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+                        videoElement.src = channel.link;
+                        videoElement.addEventListener('canplay', function() {
+                            videoElement.play();
                         });
                     }
                     playerPopup.style.display = 'flex';
