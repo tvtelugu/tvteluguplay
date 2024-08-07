@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         videoElement.removeAttribute('src'); // Remove source to stop HLS stream
         if (hls) {
             hls.destroy();
+            hls = null;
         }
     });
 
@@ -56,6 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const channel = data.find(c => c.id === id);
                 if (channel) {
                     if (Hls.isSupported()) {
+                        if (hls) {
+                            hls.destroy();
+                        }
                         hls = new Hls();
                         hls.loadSource(channel.link);
                         hls.attachMedia(videoElement);
@@ -64,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                     } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
                         videoElement.src = channel.link;
-                        videoElement.addEventListener('canplay', function() {
+                        videoElement.addEventListener('loadedmetadata', function() {
                             videoElement.play();
                         });
                     }
