@@ -112,7 +112,7 @@ main {
 
 video:-webkit-full-screen + .fullscreen-logo,
 video:-moz-full-screen + .fullscreen-logo,
-video:-ms-fullscreen + .fullscreen-logo,
+video:-ms-full-screen + .fullscreen-logo,
 video:fullscreen + .fullscreen-logo {
     display: block;
 }
