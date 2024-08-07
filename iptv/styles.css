@@ -81,6 +81,7 @@ main {
     padding: 20px;
     width: 80%;
     max-width: 800px;
+    height: 420px;
     background: #000;
     border-radius: 10px;
     border: 5px solid #ff0000;
