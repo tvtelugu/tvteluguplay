@@ -47,7 +47,7 @@ function openPopup(link) {
         });
     }
 
-    popup.style.display = 'block';
+    popup.style.display = 'flex';
     const player = new Plyr(videoPlayer);
 }
 
