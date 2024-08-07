@@ -1,0 +1,58 @@
+body {
+    font-family: 'Oswald', sans-serif;
+    background: url('https://images.pexels.com/photos/4840134/pexels-photo-4840134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(10px);
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+.header-logo {
+    max-width: 200px;
+}
+
+.search-bar {
+    margin: 20px auto;
+    max-width: 400px;
+    text-align: center;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 20px;
+}
+
+.channel-card {
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 20px;
+    width: 200px;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.channel-card img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.channel-card:hover {
+    transform: scale(1.05);
+}
