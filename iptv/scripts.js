@@ -1,81 +1,47 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('iptv.json')
         .then(response => response.json())
-        .then(data => {
-            const channelGrid = document.getElementById('channelGrid');
-            data.forEach(channel => {
-                const channelCard = document.createElement('div');
-                channelCard.classList.add('channel-card');
-                channelCard.innerHTML = `
-                    <div data-id="${channel.id}" class="channel-link">
-                        <img src="${channel.logo}" alt="${channel.name}">
-                        <h3>${channel.name}</h3>
-                    </div>
-                `;
-                channelGrid.appendChild(channelCard);
-            });
+        .then(data => loadChannels(data));
+});
 
-            document.getElementById('searchInput').addEventListener('input', function() {
-                const searchValue = this.value.toLowerCase();
-                document.querySelectorAll('.channel-card').forEach(card => {
-                    const channelName = card.querySelector('h3').textContent.toLowerCase();
-                    if (channelName.includes(searchValue)) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
+function loadChannels(channels) {
+    const channelGrid = document.getElementById('channelGrid');
+    channels.forEach(channel => {
+        const channelCard = document.createElement('div');
+        channelCard.className = 'channel-card';
+        channelCard.innerHTML = `
+            <img src="${channel.logo}" alt="${channel.name}" class="channel-logo">
+            <div class="channel-name">${channel.name}</div>
+        `;
+        channelCard.addEventListener('click', () => openPopup(channel.link));
+        channelGrid.appendChild(channelCard);
+    });
+}
 
-            document.querySelectorAll('.channel-link').forEach(link => {
-                link.addEventListener('click', function() {
-                    const id = this.getAttribute('data-id');
-                    openPlayerPopup(id);
-                });
-            });
-        });
+function openPopup(link) {
+    const popup = document.getElementById('popupPlayer');
+    const videoPlayer = document.getElementById('videoPlayer');
+    videoPlayer.src = link;
+    popup.style.display = 'block';
+}
 
-    const playerPopup = document.getElementById('playerPopup');
-    const closeButton = document.querySelector('.close-button');
-    const videoElement = document.getElementById('player');
-    let hls;
+function closePopup() {
+    const popup = document.getElementById('popupPlayer');
+    const videoPlayer = document.getElementById('videoPlayer');
+    videoPlayer.pause();
+    popup.style.display = 'none';
+}
 
-    playerPopup.style.display = 'none'; // Ensure the popup is hidden initially
-
-    closeButton.addEventListener('click', () => {
-        playerPopup.style.display = 'none';
-        videoElement.pause();
-        videoElement.removeAttribute('src'); // Remove source to stop HLS stream
-        if (hls) {
-            hls.destroy();
-            hls = null;
+function filterChannels() {
+    const searchBar = document.getElementById('searchBar');
+    const filter = searchBar.value.toLowerCase();
+    const channelCards = document.querySelectorAll('.channel-card');
+    channelCards.forEach(card => {
+        const channelName = card.querySelector('.channel-name').textContent.toLowerCase();
+        if (channelName.includes(filter)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
         }
     });
-
-    function openPlayerPopup(id) {
-        fetch('iptv.json')
-            .then(response => response.json())
-            .then(data => {
-                const channel = data.find(c => c.id === id);
-                if (channel) {
-                    playerPopup.style.display = 'flex'; // Show the popup when a channel is clicked
-                    if (Hls.isSupported()) {
-                        if (hls) {
-                            hls.destroy();
-                        }
-                        hls = new Hls();
-                        hls.loadSource(channel.link);
-                        hls.attachMedia(videoElement);
-                        hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                            videoElement.play();
-                        });
-                    } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-                        videoElement.src = channel.link;
-                        videoElement.addEventListener('loadedmetadata', function() {
-                            videoElement.play();
-                        });
-                    }
-                }
-            });
-    }
-});
+}
