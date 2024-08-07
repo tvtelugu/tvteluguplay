@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const channelCard = document.createElement('div');
                 channelCard.classList.add('channel-card');
                 channelCard.innerHTML = `
-                    <a href="player.html?id=${channel.id}">
+                    <div data-id="${channel.id}" class="channel-link">
                         <img src="${channel.logo}" alt="${channel.name}">
                         <h3>${channel.name}</h3>
-                    </a>
+                    </div>
                 `;
                 channelGrid.appendChild(channelCard);
             });
@@ -26,5 +26,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             });
+
+            document.querySelectorAll('.channel-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    openPlayerPopup(id);
+                });
+            });
         });
+
+    const playerPopup = document.getElementById('playerPopup');
+    const closeButton = document.querySelector('.close-button');
+
+    closeButton.addEventListener('click', () => {
+        playerPopup.style.display = 'none';
+        document.getElementById('player').pause();
+        document.getElementById('player').removeAttribute('src'); // Remove source to stop HLS stream
+    });
+
+    function openPlayerPopup(id) {
+        fetch('iptv.json')
+            .then(response => response.json())
+            .then(data => {
+                const channel = data.find(c => c.id === id);
+                if (channel) {
+                    const video = document.getElementById('player');
+                    if (Hls.isSupported()) {
+                        const hls = new Hls();
+                        hls.loadSource(channel.link);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                            video.play();
+                        });
+                    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = channel.link;
+                        video.addEventListener('canplay', function() {
+                            video.play();
+                        });
+                    }
+                    playerPopup.style.display = 'block';
+                }
+            });
+    }
 });
