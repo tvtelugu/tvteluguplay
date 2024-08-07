@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            console.log('Fetched data:', data); // Log the fetched data
             loadChannels(data);
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -17,7 +16,6 @@ function loadChannels(channels) {
     const channelGrid = document.getElementById('channelGrid');
     channelGrid.innerHTML = ''; // Clear existing content
     channels.forEach(channel => {
-        console.log('Loading channel:', channel); // Log each channel
         const channelCard = document.createElement('div');
         channelCard.className = 'channel-card';
         channelCard.innerHTML = `
