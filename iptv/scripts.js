@@ -40,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoElement = document.getElementById('player');
     let hls;
 
+    playerPopup.style.display = 'none'; // Ensure the popup is hidden initially
+
     closeButton.addEventListener('click', () => {
         playerPopup.style.display = 'none';
         videoElement.pause();
@@ -56,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const channel = data.find(c => c.id === id);
                 if (channel) {
-                    playerPopup.style.display = 'flex'; // Display popup before setting video source
+                    playerPopup.style.display = 'flex'; // Show the popup when a channel is clicked
                     if (Hls.isSupported()) {
                         if (hls) {
                             hls.destroy();
