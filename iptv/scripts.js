@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             video.play();
                         });
                     }
-                    playerPopup.style.display = 'block';
+                    playerPopup.style.display = 'flex';
                 }
             });
     }
