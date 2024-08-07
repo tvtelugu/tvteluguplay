@@ -66,9 +66,9 @@ main {
 .popup {
  display: none;
     position: top;
-    z-index: 1000;
+    z-index: 1;
     left: 0;
-    top: 100px;
+    top: 10px;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
