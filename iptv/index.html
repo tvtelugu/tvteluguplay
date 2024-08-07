@@ -4,30 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Channel Grid</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/plyr@3.6.2/dist/plyr.css" />
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/plyr@3.6.12/dist/plyr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.1.4/dist/hls.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 </head>
 <body>
     <header>
-        <img src="https://raw.githubusercontent.com/tvtelugu/tvteluguplay/main/images/TVTELUGU-B.png" alt="Header Logo" class="header-logo">
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Search channels...">
-        </div>
+        <img src="https://raw.githubusercontent.com/tvtelugu/play/main/images/TVTELUGU-B.png" alt="Logo" class="logo">
+        <input type="text" id="searchBar" placeholder="Search channels..." onkeyup="filterChannels()">
     </header>
-    <div class="container" id="channelGrid">
-        <!-- Channel grid items will be injected here -->
-    </div>
-
-    <div id="playerPopup" class="player-popup">
+    <main>
+        <div id="channelGrid"></div>
+    </main>
+    
+    <div id="popupPlayer" class="popup">
         <div class="popup-content">
-            <span class="close-button">&times;</span>
-            <video id="player" controls></video>
+            <span class="close" onclick="closePopup()">&times;</span>
+            <video id="videoPlayer" controls></video>
         </div>
     </div>
 
-    <script src="scripts.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
