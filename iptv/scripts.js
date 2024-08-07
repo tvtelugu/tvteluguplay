@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 const channel = data.find(c => c.id === id);
                 if (channel) {
+                    playerPopup.style.display = 'flex'; // Display popup before setting video source
                     if (Hls.isSupported()) {
                         if (hls) {
                             hls.destroy();
@@ -72,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             videoElement.play();
                         });
                     }
-                    playerPopup.style.display = 'flex';
                 }
             });
     }
