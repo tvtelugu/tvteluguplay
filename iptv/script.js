@@ -32,6 +32,7 @@ function loadChannels(channels) {
 function openPopup(link) {
     const popup = document.getElementById('popupPlayer');
     const videoPlayer = document.getElementById('videoPlayer');
+    const fullscreenLogo = document.querySelector('.fullscreen-logo');
 
     if (Hls.isSupported()) {
         const hls = new Hls();
@@ -47,6 +48,14 @@ function openPopup(link) {
         });
     }
 
+    videoPlayer.addEventListener('enterfullscreen', () => {
+        fullscreenLogo.style.display = 'block';
+    });
+
+    videoPlayer.addEventListener('exitfullscreen', () => {
+        fullscreenLogo.style.display = 'none';
+    });
+
     popup.style.display = 'flex';
     const player = new Plyr(videoPlayer);
 }
@@ -54,8 +63,11 @@ function openPopup(link) {
 function closePopup() {
     const popup = document.getElementById('popupPlayer');
     const videoPlayer = document.getElementById('videoPlayer');
+    const fullscreenLogo = document.querySelector('.fullscreen-logo');
     videoPlayer.pause();
+    videoPlayer.src = '';
     popup.style.display = 'none';
+    fullscreenLogo.style.display = 'none';
 }
 
 function filterChannels() {
